@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Render</title>
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+            }
+
+            body {
+                font-family: Arial, Verdana, sans-serif;
+                font-size: 14px;
+            }
+
+            #productos {
+                padding: 20px;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            #productos .producto {
+                position: relative;
+                box-sizing: border-box;
+                width: 30%;
+                text-align: center;
+                border: 1px solid black;
+                padding: 10px 10px 90px 10px;
+                border-radius: 20px;
+                transition: 1s;
+            }
+
+            #productos .producto:hover {
+                box-shadow: 0 0 20px black;
+            }
+
+            #productos .producto.vendido::before {
+                content: 'VENDIDO';
+                position: absolute;
+                width: 150px;
+                background-color: red;
+                color: white;
+                font-weight: bold;
+                transform: rotate(-45deg);
+                top: 40px;
+                left: -26px;
+                box-shadow: 2px 2px 5px black;
+            }
+
+            .producto .imagen {
+                box-sizing: border-box;
+                width: 100%;
+                border-top-left-radius: 20px;
+                border-top-right-radius: 20px;
+                border: 3px solid black;
+                padding: 10px;
+                background-color: #DDD;
+                margin-bottom: 20px;
+            }
+
+            .producto .nombre {
+                margin-bottom: 20px;
+            }
+
+            .producto .descripcion {
+                text-align: justify;
+            }
+
+            .producto .comprar {
+                width: calc(100% - 40px);
+                border: none;
+                background-color: orange;
+                border-radius: 20px;
+                line-height: 50px;
+                outline: none;
+                font-weight: bold;
+                position: absolute;
+                bottom: 20px;
+                left: 20px;
+                cursor: pointer;
+            }
+
+            .producto .comprar:hover {
+                background-color: black;
+                color: orange;
+            }
+
+            .producto .comprar:disabled {
+              background-color: rgba(255, 165, 0, 0.5);
+              color: #AAA;
+            }
+
+            .producto .comprar:disabled:hover {
+                background-color: rgba(255, 165, 0, 0.5);
+              color: #AAA;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="productos"></div>
+
+        <script>
+            const productos = [
+                {
+                    id: 1,
+                    nombre: 'Producto N° 1',
+                    descripcion: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae ante vehicula, tempus leo id, lobortis justo. Donec gravida vehicula urna ut aliquam. Donec id luctus turpis. Praesent porttitor luctus elit, ut hendrerit neque tempor vel. Praesent vestibulum accumsan molestie.',
+                    img: 'img/uno.png'
+                },
+                {
+                    id: 2,
+                    nombre: 'Producto N° 2',
+                    descripcion: 'Quisque egestas lectus id ligula suscipit, sit amet cursus ante laoreet. Donec faucibus tellus vitae enim convallis congue sed sed mauris. Sed consectetur velit eget urna tristique pharetra. Duis egestas libero ut massa fermentum faucibus vitae non urna. Mauris rutrum ante a turpis ultrices rutrum.',
+                    img: 'img/dos.png'
+                },
+                {
+                    id: 3,
+                    nombre: 'Producto N° 3',
+                    descripcion: 'Aenean vel diam elit. In scelerisque sagittis nulla. Etiam ornare, leo sit amet iaculis vulputate, tortor sapien lobortis felis, a finibus augue velit sed libero. Maecenas tristique mi sed pellentesque aliquam. In convallis auctor porta.',
+                    img: 'img/tres.png'
+                }
+            ];
+
+            const productosContenedor = document.getElementById('productos');
+
+            function comprarProducto(e) {
+                alert(`Gracias por comprar el producto ${e.target.parentNode.dataset.producto}`);
+                e.target.parentNode.classList.add('vendido');
+                e.target.disabled = true;
+            }
+            
+            function crearProducto(producto) {
+                const articulo = document.createElement('article');
+
+                articulo.dataset.producto = producto.id;
+                articulo.className = 'producto';
+
+                const img = document.createElement('img');
+                const nombre = document.createElement('h2');
+                const descripcion = document.createElement('p');
+                const comprar = document.createElement('button');
+
+                const textoNombre = document.createTextNode(producto.nombre)
+
+                nombre.appendChild(textoNombre);
+                nombre.className = 'nombre';
+                
+                descripcion.textContent = producto.descripcion;
+                descripcion.className = 'descripcion';
+
+                img.src = producto.img;
+                img.alt = producto.nombre;
+                img.className = 'imagen';
+
+                comprar.textContent = 'Comprar';
+                comprar.className = 'comprar';
+                comprar.addEventListener('click', comprarProducto);
+
+                articulo.appendChild(img);
+                articulo.appendChild(nombre);
+                articulo.appendChild(descripcion);
+                articulo.appendChild(comprar);
+
+                productosContenedor.appendChild(articulo);
+            }
+
+            productos.forEach(crearProducto);
+
+        </script>
+    </body>
+</html>
